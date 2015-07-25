@@ -11,6 +11,19 @@ a Twitter account dedicated to watching trees grow in Australia.
 
 This is powered by Python and designed exclusively for use on a Raspberry Pi.
 
+Install
+=======
+
+::
+
+    git clone https://github.com/davidjb/growtreesgrow.git
+    cd growtreesgrow
+    virtualenv . -p /usr/bin/python3
+    source ./bin/active
+    pip install .
+
+Now, you'll have an ``upload-pi-photo`` script available in your path (``bin/upload-pi-photo``).
+
 Getting started
 ===============
 

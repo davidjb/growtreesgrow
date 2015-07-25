@@ -32,6 +32,7 @@ setup(name='growtreesgrow',
       setup_requires=['setuptools-git', 'begins'],
       install_requires=[
           'setuptools',
+          'begins>=0.9',
           'picamera>=1.10',
           'pyyaml>=3.11',
           'twython>=3.2.0',
@@ -42,6 +43,6 @@ setup(name='growtreesgrow',
       entry_points="""
       # -*- Entry points: -*-
       [console_scripts]
-      upload-photo = growtreesgrow.upload_photo:main.start
+      upload-pi-photo = growtreesgrow:main.start
       """,
       )
