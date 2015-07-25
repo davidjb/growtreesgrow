@@ -55,4 +55,4 @@ TODO
 * Begins has a problem whereby it doesn't read environment variables 
   either for positional args or for args with defaults.  Why?
 
-  env_prefix is required -- need to document this
+* Begins: ``env_prefix`` is required -- need to document this
