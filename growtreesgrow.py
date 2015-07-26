@@ -6,6 +6,7 @@ import os
 import random
 
 import begin
+from dateutil.tz import tzlocal
 from fractions import Fraction
 import picamera
 import yaml
@@ -20,7 +21,7 @@ LONGITUDE_DMS = '146/1,44/1,153960/10000'
 LONGITUDE_REF = 'E'
 
 
-def update_status(twitter, status, media):
+def update_twitter_status(twitter, status, media):
     response = twitter.upload_media(media=media)
     twitter.update_status(
         status=status,
@@ -71,6 +72,11 @@ def main(twitter_app_key: 'Twitter App Key',
          twitter_app_secret: 'Twitter App Secret',
          twitter_oauth_token: 'Twitter OAuth Token',
          twitter_oauth_token_secret: 'Twitter OAuth Token Secret',
+         flickr_app_key: 'Flickr App Key',
+         flickr_app_secret: 'Flickr App Secret',
+         flickr_oauth_token: 'Flickr OAuth Token',
+         flickr_oauth_token_secret: 'Flickr OAuth Token Secret',
+         flickr_oauth_token_access_level: 'Flickr OAuth Token Access Level'='delete',
          image_path: 'Path to save images'='.',
          comments_path: 'Comments YAML file'='./comments.yaml',
          rotation: 'Camera rotation in degrees'=0):
@@ -78,7 +84,7 @@ def main(twitter_app_key: 'Twitter App Key',
     with open(comments_path, 'rb') as comments_file:
         comments = yaml.load(comments_file)
 
-    now = datetime.datetime.now()
+    now = datetime.datetime.now(tz=tzlocal())
     
     # TODO Get sunrise and sunset times
     if now.hour >= 5 and now.hour <= 17:
@@ -102,8 +108,8 @@ def main(twitter_app_key: 'Twitter App Key',
     capture_photo(filename, mode=camera_mode, rotation=rotation)
     logging.info('Captured photo at ' + filename)
 
-    logging.info('Starting photo tweet')
     exit()
+    logging.info('Starting photo sharing')
     twitter = Twython(
         twitter_app_key,
         twitter_app_secret,
@@ -111,6 +117,22 @@ def main(twitter_app_key: 'Twitter App Key',
         twitter_oauth_token_secret
     )
     random_status = random.choice(comments[comment_mode])
+
+    flickr_token = flickrapi.auth.FlickrAccessToken(flickr_oauth_token, flickr_oauth_token_secret, flickr_oauth_token_access_level)
+    flickr = flickrapi.FlickrAPI(flickr_app_key, flickr_app_secret, token=token)
+
+    logging.info('Starting photo sharing')
     with open(filename, 'rb') as photo:
-        update_status(twitter=twitter, status=random_status, media=photo)
-    logging.info('Tweeted the photo')
+        update_twitter_status(twitter=twitter, status=random_status, media=photo)
+        logging.info('Tweeted the photo')
+
+    response = flickr.upload(
+        filename,
+        title=now.isoformat(),
+        tags='trees time-lapse raspberry-pi',
+        is_public=1,
+        content_type=1
+    )
+    logging.info('Uploaded photo to Flickr as photo ID %s' % response.find('photoid').text)
+
+    logging.info('All finished. See you soon!')
