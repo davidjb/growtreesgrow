@@ -108,7 +108,6 @@ def main(twitter_app_key: 'Twitter App Key',
     capture_photo(filename, mode=camera_mode, rotation=rotation)
     logging.info('Captured photo at ' + filename)
 
-    exit()
     logging.info('Starting photo sharing')
     twitter = Twython(
         twitter_app_key,
