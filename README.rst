@@ -18,7 +18,7 @@ Install
 
     git clone https://github.com/davidjb/growtreesgrow.git
     cd growtreesgrow
-    virtualenv . -p /usr/bin/python3
+    virtualenv . -p /usr/bin/python
     source ./bin/active
     pip install .
 

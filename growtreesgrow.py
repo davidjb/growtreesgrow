@@ -1,4 +1,5 @@
 # coding: utf-8
+from __future__ import unicode_literals
 import datetime
 import logging
 import time
@@ -8,6 +9,7 @@ import random
 import begin
 from dateutil.tz import tzlocal
 from fractions import Fraction
+import flickrapi
 import picamera
 import yaml
 from twython import Twython
@@ -68,18 +70,18 @@ def capture_photo(filename, rotation=90, mode="auto", quality=100):
 
 @begin.start(env_prefix='GTG_')
 @begin.logging
-def main(twitter_app_key: 'Twitter App Key',
-         twitter_app_secret: 'Twitter App Secret',
-         twitter_oauth_token: 'Twitter OAuth Token',
-         twitter_oauth_token_secret: 'Twitter OAuth Token Secret',
-         flickr_app_key: 'Flickr App Key',
-         flickr_app_secret: 'Flickr App Secret',
-         flickr_oauth_token: 'Flickr OAuth Token',
-         flickr_oauth_token_secret: 'Flickr OAuth Token Secret',
-         flickr_oauth_token_access_level: 'Flickr OAuth Token Access Level'='delete',
-         image_path: 'Path to save images'='.',
-         comments_path: 'Comments YAML file'='./comments.yaml',
-         rotation: 'Camera rotation in degrees'=0):
+def main(twitter_app_key, #: 'Twitter App Key',
+         twitter_app_secret, #: 'Twitter App Secret',
+         twitter_oauth_token, #: 'Twitter OAuth Token',
+         twitter_oauth_token_secret, #: 'Twitter OAuth Token Secret',
+         flickr_app_key, #: 'Flickr App Key',
+         flickr_app_secret, #: 'Flickr App Secret',
+         flickr_oauth_token, #: 'Flickr OAuth Token',
+         flickr_oauth_token_secret, #: 'Flickr OAuth Token Secret',
+         flickr_oauth_token_access_level, #: 'Flickr OAuth Token Access Level'='delete',
+         image_path='.', #: 'Path to save images'='.',
+         comments_path='./comments.yaml', #: 'Comments YAML file'='./comments.yaml',
+         rotation=0): #: 'Camera rotation in degrees'=0):
 
     with open(comments_path, 'rb') as comments_file:
         comments = yaml.load(comments_file)
@@ -117,8 +119,14 @@ def main(twitter_app_key: 'Twitter App Key',
     )
     random_status = random.choice(comments[comment_mode])
 
-    flickr_token = flickrapi.auth.FlickrAccessToken(flickr_oauth_token, flickr_oauth_token_secret, flickr_oauth_token_access_level)
-    flickr = flickrapi.FlickrAPI(flickr_app_key, flickr_app_secret, token=token)
+    flickr_token = flickrapi.auth.FlickrAccessToken(
+        unicode(flickr_oauth_token),
+	unicode(flickr_oauth_token_secret),
+	unicode(flickr_oauth_token_access_level))
+    flickr = flickrapi.FlickrAPI(
+        unicode(flickr_app_key),
+        unicode(flickr_app_secret),
+        token=flickr_token)
 
     logging.info('Starting photo sharing')
     with open(filename, 'rb') as photo:
@@ -126,7 +134,7 @@ def main(twitter_app_key: 'Twitter App Key',
         logging.info('Tweeted the photo')
 
     response = flickr.upload(
-        filename,
+        unicode(filename),
         title=now.isoformat(),
         tags='trees time-lapse raspberry-pi',
         is_public=1,
