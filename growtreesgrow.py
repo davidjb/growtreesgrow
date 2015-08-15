@@ -84,7 +84,7 @@ def main(twitter_app_key, #: 'Twitter App Key',
          rotation=0): #: 'Camera rotation in degrees'=0):
 
     with open(comments_path, 'rb') as comments_file:
-        comments = yaml.load(comments_file)
+        comments = yaml.safe_load(comments_file)
 
     now = datetime.datetime.now(tz=tzlocal())
     
