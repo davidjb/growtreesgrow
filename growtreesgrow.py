@@ -81,7 +81,8 @@ def main(twitter_app_key, #: 'Twitter App Key',
          flickr_oauth_token_access_level, #: 'Flickr OAuth Token Access Level'='delete',
          image_path='.', #: 'Path to save images'='.',
          comments_path='./comments.yaml', #: 'Comments YAML file'='./comments.yaml',
-         rotation=0): #: 'Camera rotation in degrees'=0):
+         rotation=0, #: 'Camera rotation in degrees'=0,
+         test=False): #: 'Test photo capture only, no social media'=False):
 
     with open(comments_path, 'rb') as comments_file:
         comments = yaml.safe_load(comments_file)
@@ -110,36 +111,37 @@ def main(twitter_app_key, #: 'Twitter App Key',
     capture_photo(filename, mode=camera_mode, rotation=rotation)
     logging.info('Captured photo at ' + filename)
 
-    logging.info('Starting photo sharing')
-    twitter = Twython(
-        twitter_app_key,
-        twitter_app_secret,
-        twitter_oauth_token,
-        twitter_oauth_token_secret
-    )
-    random_status = random.choice(comments[comment_mode])
-
-    flickr_token = flickrapi.auth.FlickrAccessToken(
-        unicode(flickr_oauth_token),
-	unicode(flickr_oauth_token_secret),
-	unicode(flickr_oauth_token_access_level))
-    flickr = flickrapi.FlickrAPI(
-        unicode(flickr_app_key),
-        unicode(flickr_app_secret),
-        token=flickr_token)
-
-    logging.info('Starting photo sharing')
-    with open(filename, 'rb') as photo:
-        update_twitter_status(twitter=twitter, status=random_status, media=photo)
-        logging.info('Tweeted the photo')
-
-    response = flickr.upload(
-        unicode(filename),
-        title=now.isoformat(),
-        tags='trees time-lapse raspberry-pi',
-        is_public=1,
-        content_type=1
-    )
-    logging.info('Uploaded photo to Flickr as photo ID %s' % response.find('photoid').text)
+    if not test:
+        logging.info('Starting photo sharing')
+        twitter = Twython(
+            twitter_app_key,
+            twitter_app_secret,
+            twitter_oauth_token,
+            twitter_oauth_token_secret
+        )
+        random_status = random.choice(comments[comment_mode])
+    
+        flickr_token = flickrapi.auth.FlickrAccessToken(
+            unicode(flickr_oauth_token),
+    	unicode(flickr_oauth_token_secret),
+    	unicode(flickr_oauth_token_access_level))
+        flickr = flickrapi.FlickrAPI(
+            unicode(flickr_app_key),
+            unicode(flickr_app_secret),
+            token=flickr_token)
+    
+        logging.info('Starting photo sharing')
+        with open(filename, 'rb') as photo:
+            update_twitter_status(twitter=twitter, status=random_status, media=photo)
+            logging.info('Tweeted the photo')
+    
+        response = flickr.upload(
+            unicode(filename),
+            title=now.isoformat(),
+            tags='trees time-lapse raspberry-pi',
+            is_public=1,
+            content_type=1
+        )
+        logging.info('Uploaded photo to Flickr as photo ID %s' % response.find('photoid').text)
 
     logging.info('All finished. See you soon!')
