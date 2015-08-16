@@ -93,7 +93,7 @@ def main(twitter_app_key, #: 'Twitter App Key',
     now = datetime.datetime.now(tz=tzlocal())
     
     # TODO Get sunrise and sunset times
-    if now.hour >= 5 and now.hour <= 17:
+    if now.hour >= 5 and now.hour <= 18:
         camera_mode = 'day'
     else:
         camera_mode = 'night'
