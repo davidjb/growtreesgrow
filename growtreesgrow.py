@@ -63,8 +63,8 @@ def capture_photo(filename, rotation=90, mode="auto", quality=100):
             camera.shutter_speed = 6000000
             camera.exposure_mode = 'off'
             camera.iso = 1600
-            time.sleep(2)
 
+        time.sleep(5)
         camera.capture(filename, quality=quality)
 
 
