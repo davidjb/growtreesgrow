@@ -34,7 +34,10 @@ def update_twitter_status(twitter, status, media):
         media_ids=[response['media_id']])
 
 
-def capture_photo(filename, rotation=90, mode="auto", quality=100):
+def capture_photo(filename, rotation=90, mode="auto", quality=30):
+    """ Quality does not represent 'standard' JPEG quality.
+    The resulting file will have 100 quality according to ImageMagick.
+    """
     with picamera.PiCamera() as camera:
 
         camera.rotation = rotation
@@ -65,7 +68,7 @@ def capture_photo(filename, rotation=90, mode="auto", quality=100):
             camera.iso = 1600
 
         time.sleep(5)
-        camera.capture(filename, quality=quality)
+        camera.capture(filename, format='jpeg', quality=quality)
 
 
 @begin.start(env_prefix='GTG_')
