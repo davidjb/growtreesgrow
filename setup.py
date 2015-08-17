@@ -38,7 +38,8 @@ setup(name='growtreesgrow',
           'twython>=3.2.0',
           'requests>=2.7.0',
           'flickrapi>=2.0',
-          'python-dateutil'
+          'python-dateutil',
+          'astral'
           # -*- Extra requirements: -*-
       ],
       entry_points="""

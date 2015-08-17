@@ -13,6 +13,7 @@ import flickrapi
 import picamera
 import yaml
 from twython import Twython
+from astral import Location
 
 
 LATITUDE = -19.319002
@@ -21,6 +22,15 @@ LATITUDE_REF = 'S'
 LONGITUDE = 146.737610
 LONGITUDE_DMS = '146/1,44/1,153960/10000'
 LONGITUDE_REF = 'E'
+ELEVATION = 32  # Metres above sea-level
+
+LOCATION = Location(info=(
+    'Townsville',
+    'Australia',
+    LATITUDE,
+    LONGITUDE,
+    'Australia/Brisbane',
+    ELEVATION))
 
 
 def update_twitter_status(twitter, status, media):
@@ -92,12 +102,11 @@ def main(twitter_app_key, #: 'Twitter App Key',
 
     now = datetime.datetime.now(tz=tzlocal())
     
-    # TODO Get sunrise and sunset times
-    if now.hour >= 5 and now.hour <= 18:
+    if now >= LOCATION.dawn() and now <= LOCATION.dusk():
         camera_mode = 'day'
     else:
         camera_mode = 'night'
-    
+
     if now.hour == 6:
         comment_mode = 'morning'
     elif now.hour >= 7 and now.hour <= 17:
