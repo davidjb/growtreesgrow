@@ -8,7 +8,8 @@ being run for months or years, and probably catch some interesting activity
 in the meantime.
 
 In particular, this is being used to power http://twitter.com/growtreesgrow,
-a Twitter account dedicated to watching trees grow in Australia.
+and https://www.flickr.com/photos/growtreesgrow, accounts dedicated to
+watching trees grow in Australia.
 
 This is powered by Python and designed exclusively for use on a Raspberry Pi.
 It adjusts camera settings based upon whether it's night or day (based on
