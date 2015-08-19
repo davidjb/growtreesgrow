@@ -44,7 +44,7 @@ def update_twitter_status(twitter, status, media):
         media_ids=[response['media_id']])
 
 
-def capture_photo(filename, rotation=90, mode="auto", quality=30):
+def capture_photo(filename, rotation=90, mode="auto", quality=15):
     """ Quality does not represent 'standard' JPEG quality.
     The resulting file will have 100 quality according to ImageMagick.
     """
@@ -95,6 +95,7 @@ def main(twitter_app_key, #: 'Twitter App Key',
          image_path='.', #: 'Path to save images'='.',
          comments_path='./comments.yaml', #: 'Comments YAML file'='./comments.yaml',
          rotation=0, #: 'Camera rotation in degrees'=0,
+         quality=15, #: 'Quality setting for GPU image processor'=15,
          test=False): #: 'Test photo capture only, no social media'=False):
 
     with open(comments_path, 'rb') as comments_file:
@@ -120,7 +121,10 @@ def main(twitter_app_key, #: 'Twitter App Key',
     filename = os.path.join(
          image_path,
          '{timestamp:%Y-%m-%d-%H-%M}.jpg'.format(timestamp=now))
-    capture_photo(filename, mode=camera_mode, rotation=rotation)
+    capture_photo(filename,
+                  mode=camera_mode,
+                  rotation=rotation,
+                  quality=int(quality))
     logging.info('Captured photo at ' + filename)
 
     if not test:
