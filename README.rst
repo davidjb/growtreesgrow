@@ -4,12 +4,20 @@ About this project
 This project has a very simple goal: to use the Raspberry Pi camera, take a
 photo, and upload it to several different social media services (Twitter and
 Flickr).  It is to be run periodically to eventually produce a timelapse after
-being run for months or years.
+being run for months or years, and probably catch some interesting activity
+in the meantime.
 
 In particular, this is being used to power http://twitter.com/growtreesgrow,
-a Twitter account dedicated to watching trees grow in Australia.
+and https://www.flickr.com/photos/growtreesgrow, accounts dedicated to
+watching trees grow in Australia.
 
 This is powered by Python and designed exclusively for use on a Raspberry Pi.
+It adjusts camera settings based upon whether it's night or day (based on
+dawn/dusk times) so as the camera can keep functioning through the night.
+
+The photo metadata is currently hard-coded into the script for simplicity, 
+but I'm happy to refactor and genercise the code if anyone's interested.
+Feel free to extend/fork/hack as you will otherwise!
 
 Install
 =======
@@ -23,6 +31,10 @@ Install
     pip install .
 
 Now, you'll have an ``upload-pi-photo`` script available in your path (``bin/upload-pi-photo``).
+
+This is compatible with Python 2.7 for now.  Python 3 support would have been possible except
+the current Raspian release has only version 3.2, whilst most Python libraries are
+3.3+ compatible.
 
 Getting started
 ===============
