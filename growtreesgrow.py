@@ -128,6 +128,7 @@ def main(twitter_app_key, #: 'Twitter App Key',
                       quality=int(quality))
     except Exception as e:
         logging.exception(e)
+        exit(1)
     logging.info('Captured photo at ' + filename)
 
     if not test:
