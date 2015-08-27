@@ -118,46 +118,54 @@ def main(twitter_app_key, #: 'Twitter App Key',
         comment_mode = 'night'
 
     logging.info('Starting photo capture')
-    filename = os.path.join(
-         image_path,
-         '{timestamp:%Y-%m-%d-%H-%M}.jpg'.format(timestamp=now))
-    capture_photo(filename,
-                  mode=camera_mode,
-                  rotation=rotation,
-                  quality=int(quality))
+    try:
+        filename = os.path.join(
+             image_path,
+             '{timestamp:%Y-%m-%d-%H-%M}.jpg'.format(timestamp=now))
+        capture_photo(filename,
+                      mode=camera_mode,
+                      rotation=rotation,
+                      quality=int(quality))
+    except Exception as e:
+        logging.exception(e)
     logging.info('Captured photo at ' + filename)
 
     if not test:
         logging.info('Starting photo sharing')
-        twitter = Twython(
-            twitter_app_key,
-            twitter_app_secret,
-            twitter_oauth_token,
-            twitter_oauth_token_secret
-        )
-        random_status = random.choice(comments[comment_mode])
+        try:
+            random_status = random.choice(comments[comment_mode])
+            twitter = Twython(
+                twitter_app_key,
+                twitter_app_secret,
+                twitter_oauth_token,
+                twitter_oauth_token_secret
+            )
+            with open(filename, 'rb') as photo:
+                update_twitter_status(twitter=twitter, status=random_status, media=photo)
+                logging.info('Tweeted the photo')
+        except Exception as e:
+            logging.exception(e)
     
-        flickr_token = flickrapi.auth.FlickrAccessToken(
-            unicode(flickr_oauth_token),
-    	unicode(flickr_oauth_token_secret),
-    	unicode(flickr_oauth_token_access_level))
-        flickr = flickrapi.FlickrAPI(
-            unicode(flickr_app_key),
-            unicode(flickr_app_secret),
-            token=flickr_token)
+        try:
+            flickr_token = flickrapi.auth.FlickrAccessToken(
+                unicode(flickr_oauth_token),
+    	    unicode(flickr_oauth_token_secret),
+    	    unicode(flickr_oauth_token_access_level))
+            flickr = flickrapi.FlickrAPI(
+                unicode(flickr_app_key),
+                unicode(flickr_app_secret),
+                token=flickr_token)
     
-        logging.info('Starting photo sharing')
-        with open(filename, 'rb') as photo:
-            update_twitter_status(twitter=twitter, status=random_status, media=photo)
-            logging.info('Tweeted the photo')
     
-        response = flickr.upload(
-            unicode(filename),
-            title=now.isoformat(),
-            tags='trees time-lapse raspberry-pi',
-            is_public=1,
-            content_type=1
-        )
-        logging.info('Uploaded photo to Flickr as photo ID %s' % response.find('photoid').text)
+            response = flickr.upload(
+                unicode(filename),
+                title=now.isoformat(),
+                tags='trees time-lapse raspberry-pi',
+                is_public=1,
+                content_type=1
+            )
+            logging.info('Uploaded photo to Flickr as photo ID %s' % response.find('photoid').text)
+        except Exception as e:
+            logging.exception(e)
 
     logging.info('All finished. See you soon!')
