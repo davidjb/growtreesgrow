@@ -33,7 +33,7 @@ setup(name='growtreesgrow',
       install_requires=[
           'setuptools',
           'begins>=0.9',
-          'picamera>=1.10',
+          'picamera>=1.13',
           'pyyaml>=3.11',
           'twython>=3.2.0',
           'requests>=2.7.0',

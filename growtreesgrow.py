@@ -51,7 +51,7 @@ def capture_photo(filename, rotation=90, mode="auto", quality=15):
     with picamera.PiCamera() as camera:
 
         camera.rotation = rotation
-        camera.resolution = camera.MAX_IMAGE_RESOLUTION
+        camera.resolution = camera.MAX_RESOLUTION
         camera.exif_tags['GPS.GPSLatitude'] = LATITUDE_DMS
         camera.exif_tags['GPS.GPSLatitudeRef'] = LATITUDE_REF
         camera.exif_tags['GPS.GPSLongitude'] = LONGITUDE_DMS
