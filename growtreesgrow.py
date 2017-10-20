@@ -72,7 +72,7 @@ def capture_photo(filename, rotation=90, mode="auto", quality=15):
             camera.iso = 100
         elif mode == "night":
             # Nighttime
-            camera.framerate = Fraction(1, 10)
+            camera.framerate = 1
             camera.shutter_speed = 1000000
             camera.exposure_mode = 'verylong'
             camera.awb_mode = 'fluorescent'
