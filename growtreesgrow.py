@@ -104,7 +104,7 @@ def main(twitter_app_key, #: 'Twitter App Key',
 
     now = datetime.datetime.now(tz=tzlocal())
     
-    if now >= LOCATION.dawn() and now <= LOCATION.dusk():
+    if now >= LOCATION.sunrise() and now <= LOCATION.sunset():
         camera_mode = 'day'
     else:
         camera_mode = 'night'
