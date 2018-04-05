@@ -68,7 +68,7 @@ def capture_photo(filename, rotation=90, mode="auto", quality=15):
             camera.contrast = 20
             camera.shutter_speed = 0
             camera.exposure_mode = 'auto'
-            camera.awb_mode = 'auto'
+            camera.awb_mode = 'horizon'
             camera.iso = 100
         elif mode == "night":
             # Nighttime
