@@ -42,7 +42,7 @@ Getting started
 * Create a Twitter account, enable geolocation in your account's settings
 
 * Create a Twitter app, and follow the OAuth procedure below in an interactive
-  Python session:
+  Python session::
 
       APP_KEY='xxxxxxxxxxxxxxxxxxxxxxxxx'
       APP_SECRET='xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
